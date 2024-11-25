@@ -8,12 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ms-config-server" />
         <module name="ms-importador-marcas" />
+        <module name="ms-eureka-server" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ms-config-server" options="-parameters" />
+      <module name="ms-eureka-server" options="-parameters" />
       <module name="ms-importador-marcas" options="-parameters" />
     </option>
   </component>
