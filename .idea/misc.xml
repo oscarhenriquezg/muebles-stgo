@@ -7,6 +7,11 @@
         <option value="$PROJECT_DIR$/ms-config-server/pom.xml" />
         <option value="$PROJECT_DIR$/ms-importador-marcas/pom.xml" />
         <option value="$PROJECT_DIR$/ms-eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-justificativos /pom.xml" />
+        <option value="$PROJECT_DIR$/ms-autorizacion-hhee/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-calculo-planilla-sueldos/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-reporte-sueldos/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-api-gateway/pom.xml" />
       </list>
     </option>
   </component>
