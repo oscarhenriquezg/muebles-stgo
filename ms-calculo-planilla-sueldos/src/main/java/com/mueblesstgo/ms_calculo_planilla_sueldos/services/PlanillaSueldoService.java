@@ -51,4 +51,8 @@ public class PlanillaSueldoService {
 
         return repositorie.save(planilla);
     }
+    public List<PlanillaSueldoEntity> obtenerPlanillasPorMes(String mes) {
+        return repositorie.findByMes(mes);
+    }
+
 }

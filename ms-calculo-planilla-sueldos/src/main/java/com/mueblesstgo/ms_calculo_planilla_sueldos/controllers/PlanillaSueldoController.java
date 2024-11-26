@@ -5,6 +5,8 @@ import com.mueblesstgo.ms_calculo_planilla_sueldos.services.PlanillaSueldoServic
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/planilla")
 public class PlanillaSueldoController {
@@ -13,6 +15,13 @@ public class PlanillaSueldoController {
     public PlanillaSueldoController(PlanillaSueldoService service) {
         this.service = service;
     }
+
+    @GetMapping("/mes/{mes}")
+    public ResponseEntity<List<PlanillaSueldoEntity>> obtenerPlanillasPorMes(@PathVariable String mes) {
+        List<PlanillaSueldoEntity> planillas = service.obtenerPlanillasPorMes(mes);
+        return ResponseEntity.ok(planillas);
+    }
+
 
     @PostMapping
     public ResponseEntity<PlanillaSueldoEntity> generarPlanilla(@RequestBody PlanillaSueldoEntity planilla) {

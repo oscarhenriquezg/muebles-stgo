@@ -17,10 +17,19 @@ import java.util.List;
 public class MarcaTiempoController {
     private final MarcaTiempoService service;
 
+    /**
+     * Constructor que inyecta el servicio de MarcaTiempo.
+     * @param service Servicio que maneja la lógica de negocio para las marcas de tiempo.
+     */
     public MarcaTiempoController(MarcaTiempoService service) {
         this.service = service;
     }
 
+    /**
+     * Endpoint para cargar un archivo de marcas de tiempo.
+     * @param file Archivo a cargar.
+     * @return Mensaje indicando el resultado del proceso.
+     */
     @PostMapping("/upload")
     public String cargarArchivo(@RequestParam("file") MultipartFile file) {
         try {
@@ -31,6 +40,12 @@ public class MarcaTiempoController {
         }
     }
 
+    /**
+     * Endpoint para obtener las marcas de tiempo de un empleado en un mes específico.
+     * @param rutEmpleado RUT del empleado.
+     * @param mes Mes para filtrar las marcas de tiempo (en formato MM-yyyy).
+     * @return Lista de entidades de marcas de tiempo correspondientes al empleado y mes proporcionados.
+     */
     @GetMapping
     public List<MarcaTiempoEntity> obtenerMarcasPorEmpleado(
             @RequestParam String rutEmpleado,

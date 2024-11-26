@@ -13,6 +13,7 @@
         <module name="ms-api-gateway" />
         <module name="ms-autorizacion-hhee" />
         <module name="ms-calculo-planilla-sueldos" />
+        <module name="ms-empleados" />
         <module name="ms-importador-marcas" />
         <module name="ms-justificativos" />
       </profile>
@@ -24,6 +25,7 @@
       <module name="ms-autorizacion-hhee" options="-parameters" />
       <module name="ms-calculo-planilla-sueldos" options="-parameters" />
       <module name="ms-config-server" options="-parameters" />
+      <module name="ms-empleados" options="-parameters" />
       <module name="ms-eureka-server" options="-parameters" />
       <module name="ms-importador-marcas" options="-parameters" />
       <module name="ms-justificativos" options="-parameters" />
