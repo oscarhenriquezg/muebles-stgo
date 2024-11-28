@@ -1,5 +1,6 @@
 package com.mueblesstgo.ms_calculo_planilla_sueldos.services;
 
+import com.mueblesstgo.ms_calculo_planilla_sueldos.dto.PlanillaSueldoDTO;
 import com.mueblesstgo.ms_calculo_planilla_sueldos.entities.PlanillaSueldoEntity;
 import com.mueblesstgo.ms_calculo_planilla_sueldos.repositories.PlanillaSueldoRepository;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,49 @@ public class PlanillaSueldoService {
         this.repository = repository;
         this.restTemplate = restTemplate;
     }
+
+
+    public List<PlanillaSueldoDTO> calcularPlanillasParaTodos(int mes, int anio) {
+        // Consultar todos los empleados desde el microservicio ms-empleados
+        String empleadosUrl = "http://localhost:8084/api/empleados";
+        ResponseEntity<EmpleadoDTO[]> response = restTemplate.getForEntity(empleadosUrl, EmpleadoDTO[].class);
+        EmpleadoDTO[] empleados = response.getBody();
+
+        if (empleados == null || empleados.length == 0) {
+            throw new IllegalStateException("No se encontraron empleados.");
+        }
+
+        // Calcular la planilla para cada empleado
+        return Arrays.stream(empleados)
+                .map(empleado -> {
+                    PlanillaSueldoEntity planilla = calcularPlanilla(empleado.getRut(), mes, anio);
+
+                    // Crear el DTO con datos adicionales
+                    int añosServicio = calcularAniosServicio(empleado.getFechaIngreso());
+                    return new PlanillaSueldoDTO(
+                            empleado.getRut(),
+                            empleado.getApellidos() + " " + empleado.getNombres(),
+                            empleado.getCategoria(),
+                            añosServicio,
+                            planilla.getSueldoBase(),
+                            planilla.getBonificacion(),
+                            planilla.getHorasExtras(),
+                            planilla.getDescuentos(),
+                            planilla.getSueldoBruto(),
+                            planilla.getCotizacionPrevisional(),
+                            planilla.getCotizacionSalud(),
+                            planilla.getSueldoNeto()
+                    );
+                })
+                .toList();
+    }
+
+    private int calcularAniosServicio(LocalDate fechaIngreso) {
+        LocalDate ahora = LocalDate.now();
+        return ahora.getYear() - fechaIngreso.getYear() -
+                (ahora.getDayOfYear() < fechaIngreso.getDayOfYear() ? 1 : 0);
+    }
+
 
     public BigDecimal calcularSueldoBase(String categoria) {
         switch (categoria) {

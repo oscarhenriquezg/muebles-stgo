@@ -1,6 +1,7 @@
 package com.mueblesstgo.ms_calculo_planilla_sueldos.controllers;
 
 import com.mueblesstgo.ms_calculo_planilla_sueldos.dto.PlanillaRequest;
+import com.mueblesstgo.ms_calculo_planilla_sueldos.dto.PlanillaSueldoDTO;
 import com.mueblesstgo.ms_calculo_planilla_sueldos.entities.PlanillaSueldoEntity;
 import com.mueblesstgo.ms_calculo_planilla_sueldos.services.PlanillaSueldoService;
 import lombok.Data;
@@ -17,6 +18,12 @@ public class PlanillaSueldoController {
 
     public PlanillaSueldoController(PlanillaSueldoService service) {
         this.service = service;
+    }
+    @GetMapping("/todos")
+
+    public ResponseEntity<List<PlanillaSueldoDTO>> calcularPlanillasParaTodos(@RequestParam int mes, @RequestParam int anio) {
+        List<PlanillaSueldoDTO> planillas = service.calcularPlanillasParaTodos(mes, anio);
+        return ResponseEntity.ok(planillas);
     }
 
     @RestController
