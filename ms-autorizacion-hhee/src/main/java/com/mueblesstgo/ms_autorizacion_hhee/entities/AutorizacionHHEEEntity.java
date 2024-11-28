@@ -22,4 +22,36 @@ public class AutorizacionHHEEEntity {
 
     @Column(nullable = false)
     private Boolean autorizado = true;
+
+    public Long getIdAutorizacionesHhee() {
+        return idAutorizacionesHhee;
+    }
+
+    public void setIdAutorizacionesHhee(Long idAutorizacionesHhee) {
+        this.idAutorizacionesHhee = idAutorizacionesHhee;
+    }
+
+    public String getRutEmpleado() {
+        return rutEmpleado;
+    }
+
+    public void setRutEmpleado(String rutEmpleado) {
+        this.rutEmpleado = rutEmpleado;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public Boolean getAutorizado() {
+        return autorizado;
+    }
+
+    public void setAutorizado(Boolean autorizado) {
+        this.autorizado = autorizado;
+    }
 }

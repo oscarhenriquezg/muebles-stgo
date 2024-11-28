@@ -13,3 +13,4 @@ EXPOSE 8888
 
 # Comando para ejecutar el microservicio
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+
