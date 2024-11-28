@@ -162,7 +162,7 @@ public class PlanillaSueldoService {
 
 
 
-//    private BigDecimal calcularDescuentos(String rutEmpleado, int mes, int anio) {
+    //    private BigDecimal calcularDescuentos(String rutEmpleado, int mes, int anio) {
 //        String url = "http://localhost:8080/api/marcas/{rut}/{mes}/{anio}";
 //        ResponseEntity<MarcaAsistenciaDTO[]> response = restTemplate.getForEntity(
 //                url, MarcaAsistenciaDTO[].class, rutEmpleado, mes, anio);
@@ -191,42 +191,42 @@ public class PlanillaSueldoService {
 //
 //        return totalDescuentos;
 //    }
-private BigDecimal calcularDescuentos(String rutEmpleado, int mes, int anio) {
-    String url = "http://localhost:8080/api/marcas/{rut}/{mes}/{anio}";
-    ResponseEntity<MarcaAsistenciaDTO[]> response = restTemplate.getForEntity(
-            url, MarcaAsistenciaDTO[].class, rutEmpleado, mes, anio);
+    private BigDecimal calcularDescuentos(String rutEmpleado, int mes, int anio) {
+        String url = "http://localhost:8080/api/marcas/{rut}/{mes}/{anio}";
+        ResponseEntity<MarcaAsistenciaDTO[]> response = restTemplate.getForEntity(
+                url, MarcaAsistenciaDTO[].class, rutEmpleado, mes, anio);
 
-    MarcaAsistenciaDTO[] marcas = response.getBody();
-    BigDecimal totalDescuentos = BigDecimal.ZERO;
+        MarcaAsistenciaDTO[] marcas = response.getBody();
+        BigDecimal totalDescuentos = BigDecimal.ZERO;
 
-    LocalDate inicioMes = LocalDate.of(anio, mes, 1);
-    LocalDate finMes = inicioMes.withDayOfMonth(inicioMes.lengthOfMonth());
+        LocalDate inicioMes = LocalDate.of(anio, mes, 1);
+        LocalDate finMes = inicioMes.withDayOfMonth(inicioMes.lengthOfMonth());
 
-    for (LocalDate fecha = inicioMes; !fecha.isAfter(finMes); fecha = fecha.plusDays(1)) {
-        if (fecha.getDayOfWeek().getValue() < 6) { // Lunes a viernes
-            boolean tieneMarca = false;
-            for (MarcaAsistenciaDTO marca : marcas) {
-                if (marca.getFecha().equals(fecha)) {
-                    tieneMarca = true;
-                    break;
+        for (LocalDate fecha = inicioMes; !fecha.isAfter(finMes); fecha = fecha.plusDays(1)) {
+            if (fecha.getDayOfWeek().getValue() < 6) { // Lunes a viernes
+                boolean tieneMarca = false;
+                for (MarcaAsistenciaDTO marca : marcas) {
+                    if (marca.getFecha().equals(fecha)) {
+                        tieneMarca = true;
+                        break;
+                    }
                 }
-            }
 
-            if (!tieneMarca) {
-                // Verificar justificativo
-                String justificativoUrl = "http://localhost:8081/api/justificativos/{rut}/{fecha}";
-                Boolean tieneJustificativo = restTemplate.getForObject(
-                        justificativoUrl, Boolean.class, rutEmpleado, fecha);
+                if (!tieneMarca) {
+                    // Verificar justificativo
+                    String justificativoUrl = "http://localhost:8081/api/justificativos/{rut}/{fecha}";
+                    Boolean tieneJustificativo = restTemplate.getForObject(
+                            justificativoUrl, Boolean.class, rutEmpleado, fecha);
 
-                if (Boolean.FALSE.equals(tieneJustificativo)) {
-                    totalDescuentos = totalDescuentos.add(obtenerDescuentoPorInasistencia(rutEmpleado));
+                    if (Boolean.FALSE.equals(tieneJustificativo)) {
+                        totalDescuentos = totalDescuentos.add(obtenerDescuentoPorInasistencia(rutEmpleado));
+                    }
                 }
             }
         }
-    }
 
-    return totalDescuentos;
-}
+        return totalDescuentos;
+    }
 
 
 

@@ -28,10 +28,7 @@ public class PlanillaSueldoController {
             this.planillaSueldoService = planillaSueldoService;
         }
 
-        @GetMapping
-        public List<PlanillaSueldoDTO> obtenerPlanillas(@RequestParam int mes, @RequestParam int anio) {
-            return planillaSueldoService.obtenerPlanillasPorMesYAnio(mes, anio);
-        }
+
     }
 
 
