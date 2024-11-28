@@ -1,7 +1,7 @@
 server.port=0
-spring.application.name=ms-autorizacion-hhee
+spring.application.name=ms-reporte-sueldos
 eureka.client.service-url.defaultZone=http://localhost:8761/eureka
-spring.datasource.url=jdbc:postgresql://localhost:5432/bd_autorizacion_hhee
+spring.datasource.url=jdbc:postgresql://localhost:5432/calculo_planilla_db
 spring.datasource.username=postgres
 spring.datasource.password=mysecretpassword
 
