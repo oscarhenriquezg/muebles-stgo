@@ -5,12 +5,12 @@ import com.mueblesstgo.ms_justificativos.services.JustificativoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/justificativos")
 public class JustificativoController {
+
     private final JustificativoService service;
 
     public JustificativoController(JustificativoService service) {
@@ -18,18 +18,34 @@ public class JustificativoController {
     }
 
     @PostMapping
-    public ResponseEntity<JustificativoEntity> guardarJustificativo(@RequestBody JustificativoEntity justificativo) {
-        return ResponseEntity.ok(service.guardarJustificativo(justificativo));
+    public ResponseEntity<?> registrarJustificativo(@RequestBody JustificativoEntity justificativo) {
+        try {
+            JustificativoEntity nuevoJustificativo = service.registrarJustificativo(justificativo);
+            return ResponseEntity.ok(nuevoJustificativo);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @GetMapping("/rut/{rutEmpleado}")
-    public ResponseEntity<List<JustificativoEntity>> buscarPorRut(@PathVariable String rutEmpleado) {
-        return ResponseEntity.ok(service.buscarPorRut(rutEmpleado));
+    @GetMapping
+    public List<JustificativoEntity> listarTodos() {
+        return service.listarTodos();
     }
 
-    @GetMapping("/fechas")
-    public ResponseEntity<List<JustificativoEntity>> buscarPorFechas(
-            @RequestParam LocalDate inicio, @RequestParam LocalDate fin) {
-        return ResponseEntity.ok(service.buscarPorRangoDeFechas(inicio, fin));
+    @GetMapping("/{rut}")
+    public List<JustificativoEntity> listarPorRut(@PathVariable String rut) {
+        return service.listarPorRut(rut);
     }
+
+    @RestController
+    @RequestMapping("/api/justificativos")
+    public class JustificativosController {
+
+        @GetMapping("/{rut}/{fecha}")
+        public ResponseEntity<?> obtenerJustificativos(@PathVariable String rut, @PathVariable String fecha) {
+            // Lógica del controlador
+            return ResponseEntity.ok(true);
+        }
+    }
+
 }

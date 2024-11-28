@@ -1,7 +1,7 @@
 package com.mueblesstgo.ms_justificativos.services;
 
 import com.mueblesstgo.ms_justificativos.entities.JustificativoEntity;
-import com.mueblesstgo.ms_justificativos.repositories.JustificativoRepositorie;
+import com.mueblesstgo.ms_justificativos.repositories.JustificativoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -9,21 +9,25 @@ import java.util.List;
 
 @Service
 public class JustificativoService {
-    private final JustificativoRepositorie repositorie;
 
-    public JustificativoService(JustificativoRepositorie repositorie) {
-        this.repositorie = repositorie;
+    private final JustificativoRepository repository;
+
+    public JustificativoService(JustificativoRepository repository) {
+        this.repository = repository;
     }
 
-    public JustificativoEntity guardarJustificativo(JustificativoEntity justificativo) {
-        return repositorie.save(justificativo);
+    public JustificativoEntity registrarJustificativo(JustificativoEntity justificativo) {
+        if (repository.existsByRutEmpleadoAndFecha(justificativo.getRutEmpleado(), justificativo.getFecha())) {
+            throw new IllegalArgumentException("Ya existe un justificativo para el RUT y fecha especificados.");
+        }
+        return repository.save(justificativo);
     }
 
-    public List<JustificativoEntity> buscarPorRut(String rutEmpleado) {
-        return repositorie.findByRutEmpleado(rutEmpleado);
+    public List<JustificativoEntity> listarTodos() {
+        return repository.findAll();
     }
 
-    public List<JustificativoEntity> buscarPorRangoDeFechas(LocalDate inicio, LocalDate fin) {
-        return repositorie.findByFechaBetween(inicio, fin);
+    public List<JustificativoEntity> listarPorRut(String rutEmpleado) {
+        return repository.findByRutEmpleado(rutEmpleado);
     }
 }

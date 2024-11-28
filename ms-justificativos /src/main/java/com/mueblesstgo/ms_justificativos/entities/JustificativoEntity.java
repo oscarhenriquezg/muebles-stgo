@@ -7,21 +7,19 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-@Table(name = "justificativo")
+@Table(name = "justificativos")
 public class JustificativoEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idJustificativos;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 12)
     private String rutEmpleado;
 
     @Column(nullable = false)
     private LocalDate fecha;
 
     @Column(nullable = false)
-    private String tipo; // Por ejemplo: "Permiso médico", "Vacaciones", etc.
-
-    @Column(nullable = false)
-    private String descripcion;
+    private String motivo;
 }

@@ -3,32 +3,44 @@ package com.mueblesstgo.ms_calculo_planilla_sueldos.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
-@Table(name = "planilla_sueldo")
+@Table(name = "planilla_sueldos")
 public class PlanillaSueldoEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idPlanillaSueldos;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 12)
     private String rutEmpleado;
 
     @Column(nullable = false)
-    private String mes; // Formato: yyyy-MM
+    private int mes;
 
     @Column(nullable = false)
-    private Integer horasTrabajadas;
+    private int anio;
 
     @Column(nullable = false)
-    private Integer horasExtras;
+    private BigDecimal sueldoBase;
+
+    private BigDecimal bonificacion;
+
+    private BigDecimal horasExtras;
+
+    private BigDecimal descuentos;
 
     @Column(nullable = false)
-    private Integer bonificaciones; // En pesos chilenos
+    private BigDecimal sueldoBruto;
 
     @Column(nullable = false)
-    private Integer descuentos; // En pesos chilenos
+    private BigDecimal cotizacionPrevisional;
 
     @Column(nullable = false)
-    private Integer sueldoLiquido; // Sueldo final después de descuentos y bonificaciones
+    private BigDecimal cotizacionSalud;
+
+    @Column(nullable = false)
+    private BigDecimal sueldoNeto;
 }
