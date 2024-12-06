@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-autorizacion-hhee
+spec:
+  type: ClusterIP
+  selector:
+    app: ms-autorizacion-hhee
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082

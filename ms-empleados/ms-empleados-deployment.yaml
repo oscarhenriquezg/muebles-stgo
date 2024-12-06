@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-empleados
+  labels:
+    app: ms-empleados
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-empleados
+  template:
+    metadata:
+      labels:
+        app: ms-empleados
+    spec:
+      containers:
+        - name: ms-empleados
+          image: oscarhenriquezg/ms-empleados:latest
+          ports:
+            - containerPort: 8084
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"
+            - name: CONFIG_SERVER_URL
+              value: "http://config-server:8888"

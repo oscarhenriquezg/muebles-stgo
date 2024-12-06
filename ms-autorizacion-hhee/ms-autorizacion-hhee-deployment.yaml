@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-autorizacion-hhee
+  labels:
+    app: ms-autorizacion-hhee
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-autorizacion-hhee
+  template:
+    metadata:
+      labels:
+        app: ms-autorizacion-hhee
+    spec:
+      containers:
+        - name: ms-autorizacion-hhee
+          image: oscarhenriquezg/ms-autorizacion-hhee:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: CONFIG_SERVER_URL
+              value: http://config-server:8888
+            - name: EUREKA_SERVER_URL
+              value: http://eureka-server:8761/eureka
+
