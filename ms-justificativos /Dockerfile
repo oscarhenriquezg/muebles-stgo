@@ -1,4 +1,5 @@
-FROM openjdk:21-jdk-slim
+# Usar una imagen base de OpenJDK
+FROM openjdk:21-jdk-slim-bullseye
 
 WORKDIR /app
 
