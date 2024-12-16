@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ms-config-server" />
+        <module name="ms-api-gtw" />
         <module name="ms-eureka-server" />
         <module name="ms-reporte-sueldos" />
         <module name="ms-api-gateway" />
@@ -22,6 +23,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ms-api-gateway" options="-parameters" />
+      <module name="ms-api-gtw" options="-parameters" />
       <module name="ms-autorizacion-hhee" options="-parameters" />
       <module name="ms-calculo-planilla-sueldos" options="-parameters" />
       <module name="ms-config-server" options="-parameters" />

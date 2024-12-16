@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/ms-api-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-api-gtw/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-autorizacion-hhee/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-calculo-planilla-sueldos/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-config-server/src/main/java" charset="UTF-8" />
