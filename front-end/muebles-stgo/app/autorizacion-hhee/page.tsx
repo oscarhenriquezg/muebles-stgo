@@ -35,7 +35,7 @@ export default function AutorizacionHHEE() {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch('http://localhost:52134/api/autorizaciones')
+      const response = await fetch('http://localhost:8080/api/autorizaciones')
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -62,7 +62,7 @@ export default function AutorizacionHHEE() {
     }
     setSubmitStatus('Enviando...')
     try {
-      const response = await fetch('http://localhost:52134/api/autorizaciones', {
+      const response = await fetch('http://localhost:8080/api/autorizaciones', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export default function AutorizacionHHEE() {
           fecha: date.toISOString().split('T')[0],
           autorizado: true,
         }),
-      })
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }

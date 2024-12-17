@@ -22,8 +22,8 @@ public class ReporteService {
     }
 
     public List<ReporteDTO> obtenerReporteCompleto(int mes, int anio) {
-        String empleadosUrl = "http://localhost:8084/api/empleados";
-        String planillasUrl = String.format("http://localhost:8083/api/planillas?mes=%d&anio=%d", mes, anio);
+        String empleadosUrl = "http://localhost:8080/api/empleados";
+        String planillasUrl = String.format("http://localhost:8080/api/planillas?mes=%d&anio=%d", mes, anio);
 
         // Obtener empleados y planillas desde los microservicios correspondientes
         List<EmpleadoDTO> empleados = List.of(restTemplate.getForObject(empleadosUrl, EmpleadoDTO[].class));

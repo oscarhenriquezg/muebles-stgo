@@ -25,7 +25,7 @@ export default function CalculoPlanillas() {
           }
           return prevProgress + 10
         })
-      }, 500)
+      }, 200)
 
       return () => clearInterval(interval)
     }

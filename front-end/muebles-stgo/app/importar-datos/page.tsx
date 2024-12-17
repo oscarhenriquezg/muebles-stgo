@@ -1,19 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Sidebar } from "@/components/sidebar"
 import { TopBar } from "@/components/top-bar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Upload, AlertCircle } from 'lucide-react'
 import Image from 'next/image'
+
+interface Marca {
+  fecha: string;
+  hora: string;
+  rutEmpleado: string;
+}
 
 export default function ImportarDatos() {
   const [uploadStatus, setUploadStatus] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [marcas, setMarcas] = useState<Marca[]>([])
+  const [marcasError, setMarcasError] = useState<string | null>(null)
 
-  // Esta función es más enredá que longaniza de gato, pero hace la pega
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -28,9 +36,8 @@ export default function ImportarDatos() {
       const formData = new FormData()
       formData.append('file', file)
 
-      // Aquí viene lo choriflai, si la weá funciona es puro arte
       try {
-        const response = await fetch('http://localhost:55848/api/marcas/upload', {
+        const response = await fetch('http://localhost:8080/api/marcas/upload', {
           method: 'POST',
           body: formData,
         })
@@ -41,6 +48,7 @@ export default function ImportarDatos() {
 
         const result = await response.text()
         setUploadStatus(result)
+        fetchMarcas()
       } catch (error) {
         console.error('Error completo:', error)
         if (error instanceof TypeError && error.message === 'Failed to fetch') {
@@ -54,7 +62,27 @@ export default function ImportarDatos() {
     }
   }
 
-  // Armaos la página
+  const fetchMarcas = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/marcas')
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      setMarcas(data)
+      setMarcasError(null)
+    } catch (error) {
+      console.error('Error fetching marcas:', error)
+      setMarcasError('Error al obtener las marcas. Por favor, intente nuevamente.')
+    }
+  }
+
+  useEffect(() => {
+    if (uploadStatus.includes('éxito')) {
+      fetchMarcas()
+    }
+  }, [uploadStatus])
+
   return (
       <div className="flex flex-col h-screen">
         <TopBar />
@@ -109,11 +137,48 @@ export default function ImportarDatos() {
             </div>
 
             {uploadStatus && (
-                <Alert variant={uploadStatus.startsWith('Error') ? 'destructive' : 'default'}>
+                <Alert variant={uploadStatus.startsWith('Error') ? 'destructive' : 'default'} className="mb-6">
                   <AlertCircle className="h-4 w-4" />
                   <AlertTitle>{uploadStatus.startsWith('Error') ? 'Error' : 'Estado de la subida'}</AlertTitle>
                   <AlertDescription>{uploadStatus}</AlertDescription>
                 </Alert>
+            )}
+
+            {marcasError && (
+                <Alert variant="destructive" className="mb-6">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{marcasError}</AlertDescription>
+                </Alert>
+            )}
+
+            {marcas.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Marcas Importadas</CardTitle>
+                    <CardDescription>Lista de marcas registradas en el sistema.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Fecha</TableHead>
+                          <TableHead>Hora</TableHead>
+                          <TableHead>RUT Empleado</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {marcas.map((marca, index) => (
+                            <TableRow key={index}>
+                              <TableCell>{marca.fecha}</TableCell>
+                              <TableCell>{marca.hora}</TableCell>
+                              <TableCell>{marca.rutEmpleado}</TableCell>
+                            </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
             )}
           </main>
         </div>

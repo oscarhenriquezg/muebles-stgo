@@ -10,13 +10,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-//comment
 
 @Service
 public class MarcaAsistenciaService {
@@ -29,6 +25,9 @@ public class MarcaAsistenciaService {
 
     public List<String> procesarArchivo(MultipartFile file) {
         List<String> errores = new ArrayList<>();
+        // Definimos el formatter con el patrón de fecha yyyy/MM/dd
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
@@ -37,7 +36,9 @@ public class MarcaAsistenciaService {
                     if (datos.length != 3) {
                         throw new IllegalArgumentException("Formato inválido");
                     }
-                    LocalDate fecha = LocalDate.parse(datos[0].trim());
+
+                    // Aquí utilizamos el formatter para parsear la fecha
+                    LocalDate fecha = LocalDate.parse(datos[0].trim(), formatter);
                     LocalTime hora = LocalTime.parse(datos[1].trim());
                     String rut = datos[2].trim();
 

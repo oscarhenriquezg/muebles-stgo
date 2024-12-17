@@ -16,6 +16,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 //import { Textarea } from "@/components/ui/textarea"
 
+const API_BASE_URL = 'http://localhost:8080/api';
+
 interface Justificativo {
   idJustificativos: number;
   rutEmpleado: string;
@@ -41,10 +43,15 @@ export default function Justificativos() {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 segundos de timeout
 
-      const response = await fetch('http://localhost:61711/api/justificativos', {
-        signal: controller.signal,
-        mode: 'cors', // Asegúrate de que estás usando CORS
-        credentials: 'include', // Incluye credenciales si es necesario
+      const response = await fetch(`${API_BASE_URL}/justificativos`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
+        credentials: 'include',
       })
 
       clearTimeout(timeoutId)
@@ -80,18 +87,19 @@ export default function Justificativos() {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 segundos de timeout
 
-      const response = await fetch('http://localhost:61711/api/justificativos', {
+      const response = await fetch(`${API_BASE_URL}/justificativos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         },
         body: JSON.stringify({
           rutEmpleado: rut,
           fecha: date.toISOString().split('T')[0],
           motivo: motivo,
         }),
-        signal: controller.signal,
-        mode: 'cors',
         credentials: 'include',
       })
 
