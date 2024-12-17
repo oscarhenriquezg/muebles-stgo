@@ -10,8 +10,6 @@
         <module name="ms-config-server" />
         <module name="ms-api-gtw" />
         <module name="ms-eureka-server" />
-        <module name="ms-reporte-sueldos" />
-        <module name="ms-api-gateway" />
         <module name="ms-autorizacion-hhee" />
         <module name="ms-calculo-planilla-sueldos" />
         <module name="ms-empleados" />
@@ -19,6 +17,10 @@
         <module name="ms-justificativos" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ms-api-gateway" target="21" />
+      <module name="ms-reporte-sueldos" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
