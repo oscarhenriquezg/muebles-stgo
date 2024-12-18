@@ -34,7 +34,7 @@ public class PlanillaSueldoService {
 
     public List<PlanillaSueldoDTO> calcularPlanillasParaTodos(int mes, int anio) {
         // Consultar todos los empleados desde el microservicio ms-empleados
-        String empleadosUrl = "http://localhost:8080/api/empleados";
+        String empleadosUrl = "http://ms-empleados:8080/api/empleados";
         ResponseEntity<EmpleadoDTO[]> response = restTemplate.getForEntity(empleadosUrl, EmpleadoDTO[].class);
         EmpleadoDTO[] empleados = response.getBody();
 
@@ -105,7 +105,7 @@ public class PlanillaSueldoService {
     }
 
     public PlanillaSueldoEntity calcularPlanilla(String rutEmpleado, int mes, int anio) {
-        String empleadoUrl = "http://localhost:8080/api/empleados/{rut}";
+        String empleadoUrl = "http://ms-empleados:8080/api/empleados/{rut}";
         EmpleadoDTO empleado = restTemplate.getForObject(empleadoUrl, EmpleadoDTO.class, rutEmpleado);
 
         setSueldoBase(empleado); // Asegura que el sueldo base esté definido
@@ -150,34 +150,8 @@ public class PlanillaSueldoService {
         return BigDecimal.valueOf(0.17).multiply(BigDecimal.valueOf(1700000));
     }
 
-//    private BigDecimal calcularHorasExtras(String rutEmpleado, int mes, int anio) {
-//        String url = "http://localhost:8080/api/marcas/{rut}/{mes}/{anio}";
-//        ResponseEntity<MarcaAsistenciaDTO[]> response = restTemplate.getForEntity(
-//                url, MarcaAsistenciaDTO[].class, rutEmpleado, mes, anio);
-//
-//        MarcaAsistenciaDTO[] marcas = response.getBody();
-//        BigDecimal totalHorasExtras = BigDecimal.ZERO;
-//
-//        for (MarcaAsistenciaDTO marca : marcas) {
-//            if ("salida".equals(marca.getTipoMarca()) && marca.getHora().isAfter(LocalTime.of(18, 0))) {
-//                String authUrl = "http://localhost:8082/api/autorizaciones/{rut}/{fecha}";
-//                Boolean autorizado = restTemplate.getForObject(
-//                        authUrl, Boolean.class, rutEmpleado, marca.getFecha());
-//
-//                if (Boolean.TRUE.equals(autorizado)) {
-//                    long horasExtras = Duration.between(LocalTime.of(18, 0), marca.getHora()).toHours();
-//                    totalHorasExtras = totalHorasExtras.add(
-//                            BigDecimal.valueOf(horasExtras * obtenerPagoPorHoraExtra(empleado.getCategoria()))
-//                    );
-//                }
-//            }
-//        }
-//
-//        return totalHorasExtras;
-//    }
-
     private BigDecimal calcularHorasExtras(String rutEmpleado, int mes, int anio, EmpleadoDTO empleado) {
-        String url = "http://localhost:8080/api/marcas/{rut}/{mes}/{anio}";
+        String url = "http://ms-importador-marcas:8080/api/marcas/{rut}/{mes}/{anio}";
         ResponseEntity<MarcaAsistenciaDTO[]> response = restTemplate.getForEntity(
                 url, MarcaAsistenciaDTO[].class, rutEmpleado, mes, anio);
 
@@ -186,7 +160,7 @@ public class PlanillaSueldoService {
 
         for (MarcaAsistenciaDTO marca : marcas) {
             if ("salida".equals(marca.getTipoMarca()) && marca.getHora().isAfter(LocalTime.of(18, 0))) {
-                String authUrl = "http://localhost:8080/api/autorizaciones/{rut}/{fecha}";
+                String authUrl = "http://ms-autorizacion-hhee:8080/api/autorizaciones/{rut}/{fecha}";
                 Boolean autorizado = restTemplate.getForObject(
                         authUrl, Boolean.class, rutEmpleado, marca.getFecha());
 
@@ -204,39 +178,8 @@ public class PlanillaSueldoService {
 
 
 
-
-
-    //    private BigDecimal calcularDescuentos(String rutEmpleado, int mes, int anio) {
-//        String url = "http://localhost:8080/api/marcas/{rut}/{mes}/{anio}";
-//        ResponseEntity<MarcaAsistenciaDTO[]> response = restTemplate.getForEntity(
-//                url, MarcaAsistenciaDTO[].class, rutEmpleado, mes, anio);
-//
-//        MarcaAsistenciaDTO[] marcas = response.getBody();
-//        BigDecimal totalDescuentos = BigDecimal.ZERO;
-//
-//        LocalDate inicioMes = LocalDate.of(anio, mes, 1);
-//        LocalDate finMes = inicioMes.withDayOfMonth(inicioMes.lengthOfMonth());
-//
-//        for (LocalDate fecha = inicioMes; !fecha.isAfter(finMes); fecha = fecha.plusDays(1)) {
-//            if (fecha.getDayOfWeek().getValue() < 6) {
-//                boolean tieneMarca = Arrays.stream(marcas).anyMatch(marca -> marca.getFecha().equals(fecha));
-//
-//                if (!tieneMarca) {
-//                    String justificativoUrl = "http://localhost:8081/api/justificativos/{rut}/{fecha}";
-//                    Boolean tieneJustificativo = restTemplate.getForObject(
-//                            justificativoUrl, Boolean.class, rutEmpleado, fecha);
-//
-//                    if (Boolean.FALSE.equals(tieneJustificativo)) {
-//                        totalDescuentos = totalDescuentos.add(obtenerDescuentoPorInasistencia(rutEmpleado));
-//                    }
-//                }
-//            }
-//        }
-//
-//        return totalDescuentos;
-//    }
     private BigDecimal calcularDescuentos(String rutEmpleado, int mes, int anio) {
-        String url = "http://localhost:8080/api/marcas/{rut}/{mes}/{anio}";
+        String url = "http://ms-importador-marcas:8080/api/marcas/{rut}/{mes}/{anio}";
         ResponseEntity<MarcaAsistenciaDTO[]> response = restTemplate.getForEntity(
                 url, MarcaAsistenciaDTO[].class, rutEmpleado, mes, anio);
 
@@ -258,7 +201,7 @@ public class PlanillaSueldoService {
 
                 if (!tieneMarca) {
                     // Verificar justificativo
-                    String justificativoUrl = "http://localhost:8080/api/justificativos/{rut}/{fecha}";
+                    String justificativoUrl = "http://ms-justificativos:8080/api/justificativos/{rut}/{fecha}";
                     Boolean tieneJustificativo = restTemplate.getForObject(
                             justificativoUrl, Boolean.class, rutEmpleado, fecha);
 
@@ -295,7 +238,7 @@ public class PlanillaSueldoService {
 
 
     private BigDecimal obtenerDescuentoPorInasistencia(String rutEmpleado) {
-        String url = "http://localhost:8080/api/empleados/{rut}";
+        String url = "http://ms-empleados:8080/api/empleados/{rut}";
         EmpleadoDTO empleado = restTemplate.getForObject(url, EmpleadoDTO.class, rutEmpleado);
         return empleado.getSueldoBase().multiply(BigDecimal.valueOf(0.15));
     }

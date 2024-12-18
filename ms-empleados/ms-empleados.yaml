@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-empleados
+  labels:
+    app: ms-empleados
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-empleados
+  template:
+    metadata:
+      labels:
+        app: ms-empleados
+    spec:
+      containers:
+        - name: ms-empleados
+          image: oscarhenriquezg/ms-empleados:latest
+          ports:
+            - containerPort: 8084
+          env:
+            - name: EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
+              value: "http://eureka-server:8761/eureka"
+            - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+              value: "true"
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: "http://config-server:8888"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "default"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/bd_empleados"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "mysecretpassword"
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8084
+#            initialDelaySeconds: 10
+#            periodSeconds: 10
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8084
+#            initialDelaySeconds: 30
+#            periodSeconds: 30
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-empleados
+  labels:
+    app: ms-empleados
+spec:
+  selector:
+    app: ms-empleados
+  ports:
+    - protocol: TCP
+      port: 8084
+      targetPort: 8084
+  type: ClusterIP

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-importador-marcas
+  labels:
+    app: ms-importador-marcas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-importador-marcas
+  template:
+    metadata:
+      labels:
+        app: ms-importador-marcas
+    spec:
+      containers:
+        - name: ms-importador-marcas
+          image: oscarhenriquezg/ms-importador-marcas:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
+              value: "http://eureka-server:8761/eureka"
+            - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+              value: "true"
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: "http://config-server:8888"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "default"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/bd_importador_marcas"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "mysecretpassword"
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8080
+#            initialDelaySeconds: 10
+#            periodSeconds: 10
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8080
+#            initialDelaySeconds: 30
+#            periodSeconds: 30
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-importador-marcas
+  labels:
+    app: ms-importador-marcas
+spec:
+  selector:
+    app: ms-importador-marcas
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

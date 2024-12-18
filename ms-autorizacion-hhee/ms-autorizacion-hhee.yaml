@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-autorizacion-hhee
+  labels:
+    app: ms-autorizacion-hhee
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-autorizacion-hhee
+  template:
+    metadata:
+      labels:
+        app: ms-autorizacion-hhee
+    spec:
+      containers:
+        - name: ms-autorizacion-hhee
+          image: oscarhenriquezg/ms-autorizacion-hhee:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
+              value: "http://eureka-server:8761/eureka"
+            - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+              value: "true"
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: "http://config-server:8888"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "default"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/bd_autorizacion_hhee"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "mysecretpassword"
+            - name: CONFIG_SERVER_URL
+              value: "http://config-server:8888"
+            - name: EUREKA_SERVER_URL
+              value: "http://eureka-server:8761/eureka"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-autorizacion-hhee
+  labels:
+    app: ms-autorizacion-hhee
+spec:
+  selector:
+    app: ms-autorizacion-hhee
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: ClusterIP
+
+
