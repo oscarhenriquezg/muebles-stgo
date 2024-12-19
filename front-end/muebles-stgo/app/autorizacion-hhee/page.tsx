@@ -35,7 +35,7 @@ export default function AutorizacionHHEE() {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch('http://ms-autorizacion-hhee:8080/api/autorizaciones')
+      const response = await fetch('http://172.19.94.187:30002/api/autorizaciones')
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -62,7 +62,7 @@ export default function AutorizacionHHEE() {
     }
     setSubmitStatus('Enviando...')
     try {
-      const response = await fetch('http://ms-autorizacion-hhee:8080/api/autorizaciones', {
+      const response = await fetch('http://172.19.94.187:30002/api/autorizaciones', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

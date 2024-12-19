@@ -16,7 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 //import { Textarea } from "@/components/ui/textarea"
 
-const API_BASE_URL = 'http://ms-justificativos:8080/api';
+const API_BASE_URL = 'http://172.19.94.187:30002/api';
 
 interface Justificativo {
   idJustificativos: number;

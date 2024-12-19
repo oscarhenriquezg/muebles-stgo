@@ -32,7 +32,7 @@ export default function ReporteSueldos() {
       setIsLoading(true)
       setError(null)
       try {
-        const response = await fetch('http://ms-calculo-planilla-sueldos:8080/api/planilla/todos?mes=11&anio=2024')
+        const response = await fetch('http://172.19.94.187:30002/api/planilla/todos?mes=11&anio=2024')
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }

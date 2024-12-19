@@ -22,7 +22,7 @@ spec:
 #          env:
           # Vars de ambiente para front end por si es necesario
           # - name: API_GATEWAY_URL
-          #   value: "http://172.19.94.187:30002"
+          #   value: "http://ms-api-gtw:8080"
 ---
 apiVersion: v1
 kind: Service

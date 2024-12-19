@@ -37,7 +37,7 @@ export default function ImportarDatos() {
       formData.append('file', file)
 
       try {
-        const response = await fetch('http://ms-importador-marcas:8080/api/marcas/upload', {
+        const response = await fetch('http://172.19.94.187:30002/api/marcas/upload', {
           method: 'POST',
           body: formData,
         })
@@ -64,7 +64,7 @@ export default function ImportarDatos() {
 
   const fetchMarcas = async () => {
     try {
-      const response = await fetch('http://ms-importador-marcas:8080/api/marcas')
+      const response = await fetch('http://172.19.94.187:30002/api/marcas')
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
